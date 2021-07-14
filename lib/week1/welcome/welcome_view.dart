@@ -27,13 +27,7 @@ class WelcomeView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.wallpaper),
-            Text(
-              appBarTitle,
-              style: Theme.of(context)
-                  .primaryTextTheme
-                  .headline5!
-                  .copyWith(color: Theme.of(context).colorScheme.onPrimary),
-            ),
+            textChildrenRow(context),
           ],
         ),
       ),
@@ -44,6 +38,16 @@ class WelcomeView extends StatelessWidget {
           Expanded(flex: 1, child: buildDismissibleBottomCard()),
         ],
       ),
+    );
+  }
+
+  Text textChildrenRow(BuildContext context) {
+    return Text(
+      appBarTitle,
+      style: Theme.of(context)
+          .primaryTextTheme
+          .headline5!
+          .copyWith(color: Theme.of(context).colorScheme.onPrimary),
     );
   }
 
