@@ -1,22 +1,27 @@
-/*
+
 import 'dart:convert';
-import 'package:http/http.dart';
-import 'package:vs_code_flutter_demo/week2/post_json_place_holder/model/post_product.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:vs_code_flutter_demo/week2/post_json_place_holder/model/post_login_model.dart';
 
 class ApiService{
-  final String apiUrl = "https://crudcrud.com/api";
-  
-  Future <List<Product>> getProduct() async {
-    Response res = await get(apiUrl);
+    Future<LoginResponseModel> login() async{
+      String url = "https://jptest.diyalogo.com.tr/logo/restservices/rest/login";
 
-    if(res.statusCode == 200) {
-      List<dynamic> body = jsonDecode(res.body);
-      List<Product> product = body.map((dynamic item) => Product.fromJson(item)).toList();
-      return product;
-    }else{
-      throw "Listeyi yüklerken hata olustu" ;
+      final response = await http.post(Uri.parse(url),
+       headers: {
+        HttpHeaders.authorizationHeader : 'BASIC SU5URVJOQUxVU0VSOkxvZ28xOTg0OjYxOjYxOlRSVFI=',
+         "Content-Type": "application/json",
+       }
+      );
+
+      if(response.statusCode ==200 || response.statusCode == 400){
+        return LoginResponseModel.fromJson(jsonDecode(response.body));
+      }
+      else{
+        throw Exception('Veri yüklenirken hata oluştu');
+      }
     }
     
   }
 
-}*/

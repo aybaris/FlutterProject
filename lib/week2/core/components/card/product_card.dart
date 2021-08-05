@@ -1,3 +1,6 @@
+
+/*
+
 import 'package:flutter/material.dart';
 import 'package:vs_code_flutter_demo/week2/core/components/card/post_information_card.dart';
 import 'package:vs_code_flutter_demo/week2/post_json_place_holder/model/post_product.dart';
@@ -28,16 +31,17 @@ class _ProductCardState extends State<ProductCard> {
         leading: CircleAvatar(
           child: buildText(),
         ),
-        title: Text(widget.model?.name ?? ""),
+        title: Text(widget.model?.description ?? ""),
       ),
     );
   }
 
   Widget buildText() {
-    if (widget.model?.id != null) {
-      return Text(widget.model?.age.toString() ?? "");
+    if (widget.model?.referenceCode != null) {
+      return Text(widget.model?.description.toString() ?? "");
     }
 
     return FlutterLogo();
   }
 }
+*/

@@ -4,19 +4,19 @@ extension ServicePathEnumExtension on ServicePathEnum {
   String get rawValue {
     switch (this) {
       case ServicePathEnum.BASE_URL:
-        return 'https://crudcrud.com/api/5381f39ad7f540fbb607c5911741a6d6';
+        return 'https://crudcrud.com/api/dd88e200c2f64b0fb6dae7d9253c88bd';
 
       case ServicePathEnum.POST:
-        return '/unicorns';
+        return '/temp';
 
       case ServicePathEnum.GET:
-        return '/unicorns';
+        return '/temp';
 
       case ServicePathEnum.DELETE:
-        return '/unicorns';
+        return '/temp';
 
       case ServicePathEnum.PUT:
-        return '/unicorns/';
+        return '/temp';
 
       default:
         throw Exception('Not found path');

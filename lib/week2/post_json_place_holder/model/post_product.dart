@@ -1,39 +1,55 @@
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
+
 class Product {
+  String id;
+  String referenceCode;
+  String description;
+  String imageData;
+  String barcode;
 
+  Product({ required this.id,  required this.referenceCode,  required this.description, required this.imageData , required this.barcode});
 
-  int? id;
-  String? name;
-  int? age;
-  String? colour;
-
-
-  Product({ this.id, this.name, this.age, this.colour});
-
-
-  factory Product.fromJson(Map<String, dynamic> map) {
+  factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-        id: map["id"], name: map["name"], age: map["age"], colour: map["colour"]);
+    id: json['_id'],
+    referenceCode: json['referenceCode'],
+    description: json['description'],
+    imageData: json['imageData'],
+    barcode: json['barcode'],);
+
   }
 
   Map<String, dynamic> toJson() {
-    return {"id": id, "name": name, "age": age, "colour": colour};
+    return {/*"_id": id, */"referenceCode": referenceCode, "description": description, "imageData": imageData, "barcode": barcode};
+  }
+
+  Map<String, dynamic> toJsonWithId() {
+    return {"_id": id, "referenceCode": referenceCode, "description": description, "imageData": imageData, "barcode": barcode};
   }
 
   @override
   String toString() {
-    return 'Profile{id: $id, name: $name, age: $age, colour: $colour}';
+    return 'Profile{_id: $id, referenceCode: $referenceCode, description: $description, imageData: $imageData, barcode: $barcode}';
   }
 }
 
-
 List<Product> productFromJson(String jsonData) {
-  final data = json.decode(jsonData);
-  return List<Product>.from(data.map((item) => Product.fromJson(item)));
+  //Product.fromJson(json.decode(jsonData));
+   final data = json.decode(jsonData);
+   return List<Product>.from(data.map((item) => Product.fromJson(item)));
 }
 
+
 String productToJson(Product data) {
-  final jsonData = data.toJson();
-  return json.encode(jsonData);
+  if(data.id == ""){
+
+    final jsonData = data.toJson();
+    return json.encode(jsonData);
+  }
+  else {
+    final jsonData = data.toJson();
+    return json.encode(jsonData);
+  }
 }
