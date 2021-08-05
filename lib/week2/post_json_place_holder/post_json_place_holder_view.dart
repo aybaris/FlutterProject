@@ -1,3 +1,5 @@
+/*
+
 import 'package:flutter/material.dart';
 import 'package:vs_code_flutter_demo/week2/core/components/card/post_card.dart';
 import 'package:vs_code_flutter_demo/week2/core/components/card/product_card.dart';
@@ -11,9 +13,7 @@ class PostJsonPlaceHolderView extends PostJsonPlaceHolderViewModel {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
-      body:
-
-        isLoading
+      body: isLoading
           ? Center(child: LinearProgressIndicator())
           : buildListView(),
     );
@@ -39,3 +39,4 @@ class PostJsonPlaceHolderView extends PostJsonPlaceHolderViewModel {
     );
   }
 }
+*/
