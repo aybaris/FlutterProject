@@ -17,19 +17,21 @@ class InformationDataScreen extends StatefulWidget {
   String referenceCode;
   String description;
   String imageData;
-  String barcode;
+//  String barcode;
+  String token;
+  bool isSuccess;
 
 
   bool _isApiProcess = true;
 
-  InformationDataScreen({required this.id ,required this.referenceCode,   required this.description , required this.imageData ,  required this.barcode });
+  InformationDataScreen({required this.id ,required this.referenceCode,   required this.description , required this.imageData /*,  required this.barcode*/,required this.token ,  required this.isSuccess, });
 
   @override
   _InformationDataScreenState createState() => _InformationDataScreenState();
 }
  final String randomImage= 'https://vay-be.net/uploads/noproductimage.png';
 class _InformationDataScreenState extends State<InformationDataScreen> {
-  late Product _product = Product(referenceCode: widget.referenceCode, description:  widget.description, imageData:  widget.imageData, barcode: widget.barcode, id: '');
+ // late Product _product = Product(referenceCode: widget.referenceCode, description:  widget.description, imageData:  widget.imageData,id: ''); //barcode: widget.barcode, );
   String _data ="";
   PlaceHolderService placeHolderService = PlaceHolderService();
   File? _selectedImage;
@@ -38,14 +40,18 @@ class _InformationDataScreenState extends State<InformationDataScreen> {
   TextEditingController _productBarcodeController = TextEditingController();
   late String tempId;
   late String tempImageData;
+  late String tempToken;
+  late bool tempIsSuccess;
 
   @override
   void initState() {
+    tempToken = widget.token;
+    tempIsSuccess = widget.isSuccess;
     tempId = widget.id;
     tempImageData = widget.imageData;
     _productReferenceCodeController.text = widget.referenceCode.toString();
     _productDescriptionController.text = widget.description.toString();
-    _productBarcodeController.text = widget.barcode.toString();
+   // _productBarcodeController.text = widget.barcode.toString();
     super.initState();
   }
 
@@ -72,7 +78,7 @@ class _InformationDataScreenState extends State<InformationDataScreen> {
 
                            alignment: Alignment.center,
 
-                           child:  widget.referenceCode == "" ?
+                           child:  widget.description == "" ?
                            CircleAvatar(
                              child: _selectedImage == null ? Text("Fotoğraf"): null ,
                              radius: 100,
@@ -80,7 +86,7 @@ class _InformationDataScreenState extends State<InformationDataScreen> {
                            )
                                :
                            CircleAvatar(
-                              child: _selectedImage == null ?  Image.memory(base64Decode(tempImageData),fit: BoxFit.fill,): Image.file(_selectedImage!,fit: BoxFit.fill,),
+                              child: _selectedImage == null ?  Image.memory(base64Decode(tempImageData.replaceAll('\n', '')),fit: BoxFit.fill,): Image.file(_selectedImage!,fit: BoxFit.fill,),
                              radius: 100,//radius is 50
                                //image url
                            ),
@@ -123,7 +129,7 @@ class _InformationDataScreenState extends State<InformationDataScreen> {
                                    color: Colors.black54, width: 2))),
                      ),
                    ),
-                   Padding(
+                 /*  Padding(
                      padding: const EdgeInsets.all(8.0),
                      child: TextFormField(
                        controller: _productBarcodeController ,
@@ -135,8 +141,8 @@ class _InformationDataScreenState extends State<InformationDataScreen> {
                                borderSide: BorderSide(
                                    color: Colors.black54, width: 2))),
                      ),
-                   ),
-                   ElevatedButton(
+                   ),*/
+                 /*  ElevatedButton(
                      onPressed: () async =>_scan() ,
                      child: Text("Barkod Ekle"),
                      style: ElevatedButton.styleFrom(
@@ -145,7 +151,7 @@ class _InformationDataScreenState extends State<InformationDataScreen> {
                        shadowColor: Colors.deepOrange,
                        elevation: 4,
                      ),
-                   ),
+                   ),*/
 
                    widget.referenceCode == "" ?
                    ElevatedButton(
@@ -241,20 +247,16 @@ class _InformationDataScreenState extends State<InformationDataScreen> {
     else if (description.isEmpty){
       showSnackBarMessage("Açıklama boş olamaz");
     }
-    else if (barcode == "-1"){
-      showSnackBarMessage("Barkod -1 olamaz");
-    }
-    else if(_selectedImage == File(randomImage)){
-      showSnackBarMessage("Resim yüklemeden işlem yapılamaz !");
-    }
+
+
     else {
       final String referenceCode = _productReferenceCodeController.text;
       final String description = _productDescriptionController.text;
-      final String barcode =   _productBarcodeController.text;
+     // final String barcode =   _productBarcodeController.text;
       String imageData = base64Encode(_selectedImage!.readAsBytesSync());
-      Product product = Product(referenceCode: referenceCode, description: description, imageData: imageData, barcode: barcode, id: '');
-      print("Product to json " + productToJson(product));
-      placeHolderService.createProduct(product).then((value) => Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen())));
+      rowsList productRow = rowsList(referenceCode: referenceCode, description: description, imageData: imageData);//barcode: barcode, );
+      print("imagedata"+imageData);
+      placeHolderService.createProduct(productRow.description,productRow.referenceCode,productRow.imageData,tempToken).then((value) => Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(token: tempToken,isSuccess:tempIsSuccess ,))));
       }
 
     }
@@ -296,11 +298,12 @@ class _InformationDataScreenState extends State<InformationDataScreen> {
        final String referenceCode = _productReferenceCodeController.text;
        final String description = _productDescriptionController.text;
        final String barcode =   _productBarcodeController.text;
-       //String imageData = base64Encode(_selectedImage.readAsBytesSync());
-       Product product = Product(referenceCode: referenceCode, description: description, imageData: tempImageDataUpdate, barcode: barcode, id: tempIdUpdate);
-       print("Product to json " + productToJson(product));
 
-       placeHolderService.updateProduct(product).then((value) => Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen())));
+       //String imageData = base64Encode(_selectedImage.readAsBytesSync());
+      // Product product = Product(referenceCode: referenceCode, description: description, imageData: tempImageDataUpdate, id: tempIdUpdate);//barcode: barcode, );
+    //   print("Product to json " + productToJson(product));
+       rowsList productRow = rowsList(referenceCode: referenceCode, description: description, imageData: tempImageDataUpdate, id:  tempIdUpdate);//barcode: barcode, );
+    placeHolderService.updateProduct(tempIdUpdate, tempToken,referenceCode,description,tempImageDataUpdate).then((value) => Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(token: tempToken,isSuccess:  tempIsSuccess,))));
 
 
 

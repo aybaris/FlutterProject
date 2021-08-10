@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vs_code_flutter_demo/week2/post_json_place_holder/model/post_login_model.dart';
 import 'package:vs_code_flutter_demo/week2/post_json_place_holder/service/api_service.dart';
+import 'package:vs_code_flutter_demo/week2/ui/home/home_screen.dart';
 
 class LoginScreen extends StatefulWidget{
 
@@ -10,7 +12,8 @@ class LoginScreen extends StatefulWidget{
 
 class _LoginScreenState extends State<LoginScreen>{
   ApiService apiService = ApiService();
-
+  TextEditingController _loginMailController = TextEditingController();
+  TextEditingController _loginPasswordController = TextEditingController();
   bool isRememberMe = false;
 
   Widget buildEmail() {
@@ -41,6 +44,7 @@ class _LoginScreenState extends State<LoginScreen>{
           ),
           height: 60,
           child: TextField(
+            controller: _loginMailController,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.black87,
@@ -91,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen>{
           ),
           height: 60,
           child: TextField(
+            controller: _loginPasswordController,
             obscureText: true,
             style: TextStyle(
               color: Colors.black87,
@@ -164,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen>{
       width: double.infinity,
       child: ElevatedButton(
 
-        onPressed: () {print(apiService.login());},
+        onPressed: () => loginPressed(),
         child: Text("GİRİŞ",
         style: TextStyle(
           color: Color(0xffd50000),fontSize: 38, fontWeight: FontWeight.bold
@@ -266,5 +271,11 @@ class _LoginScreenState extends State<LoginScreen>{
       ),
 
     );
+  }
+
+  loginPressed() {
+    String mail = _loginMailController.text;
+    String password = _loginPasswordController.text;
+  apiService.login(mail,password).then((value) => value.success == true ? Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(token: value.token,isSuccess: value.success,))): null );
   }
 }
