@@ -121,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           context: context,
                                           builder: (context) {
                                             return AlertDialog(
-                                              title: Text("Ürün silinecek !!"),
+                                              title: Text("Ürün silinecek !"),
 
                                              content: Text(" ${productItem.description} isimli ürün silinecek. Emin misiniz?"),
                                               actions: [
